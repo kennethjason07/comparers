@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Starset Consultancy Services</title>
+    <link rel="stylesheet" href="/frontend/styles.css">
+
+</head>
+<body>
+    <header class="header">
+        <div class="header-logo">
+                <img src="/frontend/logo.png" alt="starsetlogo" >
+            <div class="header-navigation">
+                <h2>Starset Consultancy Services</h2>
+            </div>
+        </div>
+        <div class="profile-container">
+            <div class="profile-dropdown">
+                <img src="https://via.placeholder.com/30" alt="profile-dropdown">
+                <select id="pageSelect" onchange="redirectToPage()">
+                    <option value="user.html">User</option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+
+    <div class="login-container">
+        <h2>Login</h2>
+        <label for="username">Username:</label>
+        <input type="text" id="username" placeholder="enter username">
+        <label for="password">Password:</label>
+        <input type="password"  id="password" placeholder="enter password">
+        <button onclick="authenticateUser()">Login</button>
+    </div>
+
+    <main class="main">
+            <div class="main-header">
+                <h1>Dashboard</h1>
+            </div>
+            <div class="horizontal-tabs">
+                <a href="#" onclick="showContent('new-bill')">New Bill</a>
+                <a href="#" onclick="showContent('customer-info')">Customer's Information</a>
+                <a href="#" onclick="showContent('orders')">Orders</a>
+                <a href="#" onclick="showContent('order-overview')">Orders Overview </a>
+               <a href="#" onclick="showContent('workers')">Workers</a>
+            </div>
+
+            <div class="content-main">
+                
+                <div id="new-bill" class="new-bill hidden">
+                        <form id="new-bill-form">
+                            
+                            <div id="printablearea">
+                            <fieldset>
+                                <legend>
+                                    <label for="measurments">Measurments:</label>
+
+                                </legend>
+                                <h3>Select Measurement Type</h3>
+                                <label>
+                                <input type="checkbox" name="measurements-selection" value="pant" onclick="toggleMeasurements()"> Pant
+                                </label>
+                                <label>
+                                    <input type="checkbox" name="measurements-selection" value="shirt" onclick="toggleMeasurements()"> Shirt
+                                </label>
+                                <label>
+                                    <input type="checkbox" name="measurements-selection" value="extra" onclick="toggleMeasurements()"> Extra
+                                </label>
+                                <fieldset id="pant-section" class="hidden">
+                                    <legend>
+                                        <h2>Pant Measurment:</h2>
+                                    </legend>
+                                    <label for="length">length:</label>
+                                    <input type="number" name="length" id="length">
+
+                                    <label for="kamar">Kamar</label>
+                                    <input type="number" name="kamar" id="kamar">
+
+                                    <label for="hips">Hips</label>
+                                    <input type="number" name="hips" id="hips">
+
+                                    <label for="waist">ran</label>
+                                    <input type="number" name="waist" id="waist">
+
+                                    <label for="Ghutna">Ghutna</label>
+                                    <input type="number" name="Ghutna" id="Ghutna">
+
+                                    <label for="Bottom">bottom</label>
+                                    <input type="number" name="Bottom" id="Bottom">
+
+                                    <label for="seat">seat</label>
+                                    <input type="number" name="seat" id="seat">
+
+                                </fieldset>
+                                <fieldset id="shirt-section" class="hidden">
+                                    <legend>
+                                        <h2>
+                                            shirt Measurments
+                                        </h2>
+                                    </legend>
+                                    <label for="length">length:</label>
+                                    <input type="number" name="shirtlength" id="shirtlength">
+
+                                    <label for="body">body</label>
+                                    <input type="number" name="body" id="body">
+
+                                    <label for="Loose">Loose</label>
+                                    <input type="number" name="Loose" id="Loose">
+
+                                    <label for="Shoulder">Shoulder</label>
+                                    <input type="number" name="Shoulder" id="Shoulder">
+
+                                    <label for="Astin">Astin</label>
+                                    <input type="number" name="Astin" id="Astin">
+
+                                    <label for="collor">collor</label>
+                                    <input type="number" name="collor" id="collor">
+
+                                    <label for="allose">Aloose</label>
+                                    <input type="number" name="allose" id="allose">
+
+                                    <div id="shirtdraw">
+                                        <textarea name="shirtdraw" id="shirtdraw" rows="30" cols="30"></textarea>
+                                    </div>
+                                </fieldset>
+                            </fieldset>
+
+                            <div id="extra-section" class="hidden">
+                                <legend>
+                                    <textarea name="extra-input" id="extra-input" rows="10" cols="166"></textarea>
+                                </legend>
+
+                            </div>
+
+                            <fieldset>
+                                <legend>Pant</legend>
+                                <label for="SideP/Cross"><input type="radio" name="SideP/Cross"  id="SideP/Cross" value="
+                                    SideP/Cross" >SideP/Cross</label>
+                                    <label for="Plates"><input type="radio" name="Plates"  id="Plates" value="
+                                        Plates" >Plates</label>
+                                        <label for="Belt"><input type="radio" name="Belt"  id="Belt" value="
+                                            Belt" >Belt</label>
+                            <label for="Back P."><input type="radio" name="Back P."  id="Back P." value="
+                            Back P." >Back P.</label>
+                            <label for="WP."><input type="radio" name="WP."  id="WP." value="
+                                WP." >WP.</label>
+
+
+                            </fieldset>
+
+
+                            <fieldset>
+                                <legend>Shirt</legend>
+                                <label for="Collar"><input type="radio" name="Collar"  id="Collar" value="
+                                    Collar" >Collar</label>
+                                    <label for="Cuff"><input type="radio" name="Cuff"  id="Cuff" value="
+                                        Cuff" >Cuff</label>
+                                        <label for="Pkt."><input type="radio" name="Pkt."  id="Pkt." value="
+                                            Pkt." >Pkt.</label>
+                            <label for="Loose"><input type="radio" name="Loose"  id="shirtLoose" value="
+                            Loose" >Loose</label>
+                            <label for="DT/TT"><input type="radio" name="DT/TT"  id="DT/TT" value="
+                                DT/TT" >DT/TT</label>
+
+
+                            </fieldset>
+
+                            <!-- niche likhe so code se hamari gend mari jasakti (potential) -->
+                             
+                            <fieldset>
+                                <legend>Garment Type:</legend>
+                                <label for="shirt">
+                                    <input type="radio" id="garment_type" name="garment_type" value="Suit"  required>
+                                    Suit.
+                                </label>
+                                <label for="pants">
+                                    <input type="radio" id="garment_type" name="garment_type" value="Safari/Jacket" required >
+                                    Safari/Jacket.
+                                </label>
+                                <label for="jacket">
+                                    <input type="radio" id="garment_type" name="garment_type" value="Pant" required >
+                                    Pant.
+                                </label>
+                                <label for="other">
+                                    <input type="radio" id="garment_type" name="garment_type" value="Shirt"  required>
+                                    Shirt.
+                                </label>
+                            </fieldset>
+
+                            <!-- idhar bhi gand mari ja sakti -->
+
+                            <fieldset>
+                                <legend>Payment Mode:</legend>
+                                <label>
+                                    <input type="radio" id="Payment" name="payment_mode" value="UPI" required>
+                                    UPI
+                                </label>
+                                <label>
+                                    <input type="radio" id="Payment" name="payment_mode" value="Cash" required>
+                                    Cash
+                                </label>
+                            </fieldset>
+
+
+                            <label for="quantity">Quantity:</label>
+                                <input type="number" id="quantity" name="quantity" min="1" required>
+    
+                                <label for="today-date">Order Date:</label>
+                                <input type="date" id="today-date" name="today_date" required>
+    
+                                <label for="due-date">Delivery Date:</label>
+                                <input type="date" id="due-date" name="due_date" required>
+
+                                <label for="payementstatus">Payment Status:</label>
+                            <select id="payementstatus" onchange="">
+                                <option value="paid">Paid</option>
+                                <option value="pending">pending</option>
+                                <option value="advance">advance</option>
+                            </select>
+                            </div>
+
+
+                            <div class="form-column2">
+                                <div id="customerbill">
+                                <div class="bill-logo"><img src="/frontend/Shop.jpeg" alt="log" ></div>
+                                <h2>Customer Information</h2>
+    
+                               
+                                <label for="customer-name">Customer Name:</label>
+                                <input type="text" id="customer-name" name="customer_name" required> 
+                                
+    
+                                <label for="mobile-number">Mobile Number:</label>
+                                <input type="tel" id="mobile-number" name="mobile_number" pattern="[0-9]{10}" placeholder="1234567890" required>
+    
+                                <label for="date_issue">Date:</label>
+                                <input type="date" id="date_issue" name="date_issue" required>
+    
+                                <label for="delivery-date">delivery-date:</label>
+                                <input type="date" id="delivery-date" name="delivery-date" required>
+
+                                <table id="customer-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Particulars</th>
+                                            <th>Qty</th>
+                                            <th>Amount</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Suit</td>
+                                            <td><input type="number" name="suit_qty" id="suit_qty" oninput="calculateTotals()"></td>
+                                            <td><input type="number" name="suit_amount" id="suit_amount" oninput="calculateTotals()"></td>
+                                        </tr>
+                                
+                                        <tr>
+                                            <td>Safari/Jacket</td>
+                                            <td><input type="number" name="safari_qty" id="safari_qty" oninput="calculateTotals()"></td>
+                                            <td><input type="number" name="safari_amount" id="safari_amount" oninput="calculateTotals()"></td>
+                                        </tr>
+                                
+                                        <tr>
+                                            <td>Pant</td>
+                                            <td><input type="number" name="pant_qty" id="pant_qty" oninput="calculateTotals()"></td>
+                                            <td><input type="number" name="pant_amount" id="pant_amount" oninput="calculateTotals()"></td>
+                                        </tr>
+                                
+                                        <tr>
+                                            <td>Shirt</td>
+                                            <td><input type="number" name="shirt_qty" id="shirt_qty" oninput="calculateTotals()"></td>
+                                            <td><input type="number" name="shirt_amount" id="shirt_amount" oninput="calculateTotals()"></td>
+                                        </tr>
+                                
+                                        <tr>
+                                            <td><strong>Total</strong></td>
+                                            <td><input type="number" name="total_qty" id="total_qty" readonly></td>
+                                            <td><input type="number" name="total_amt" id="total_amt" readonly></td>
+                                        </tr>
+                                
+                                    </tbody>
+                                </table>
+                        
+                            </div> 
+                            </div>
+                        
+                        
+
+                            <div class="centering">
+    
+                                <button type="submit" id="savePrintBtn" class="button save-print">Save and Print</button>
+            
+                                </div>
+                        
+
+                        </form>
+                        </div>
+                    </div>
+                
+                <div id="customer-info" class="customer-info hidden">
+                    customer-info
+                </div>
+                <div id="orders" class="orders hidden">
+                    orders
+                </div>
+                <div id="order-overview" class="order-overview hidden">
+                    order-overview
+                </div>
+                <div id="workers" class="workers hidden">
+                    workers
+                </div>
+
+            </div>
+ 
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script> 
+
+
+    <script src="/frontend/index.js"></script>
+</body>
+</html>

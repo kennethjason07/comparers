@@ -1,0 +1,226 @@
+/* Header Styles */
+.header {
+    display: flex;
+    align-items: center; /* Vertically center items */
+    padding: 0 20px; /* Padding for space inside the header */
+    border-bottom: 1px solid black;
+    position: relative; /* Needed for absolute positioning of profile container */
+}
+
+.header {
+    width: 90%;
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.header-logo {
+    display: flex;
+    align-items: center; /* Vertically center the logo image */
+    margin-right: 20px; /* Space between logo and navigation */
+}
+
+.header-logo img {
+    width: 100px;
+    height: 100px;
+}
+
+.header-navigation {
+    margin-left: 2px; /* Small space between logo and navigation text */
+    flex-grow: 1; /* Allow navigation to take up remaining space */
+    white-space: nowrap; /* Keep text in a single line */
+    overflow: hidden; /* Hide overflow text if needed */
+    text-overflow: ellipsis; /* Add ellipsis for overflow text */
+}
+
+.header-navigation h2 {
+    color: darkslateblue; /* Sets the text color to dark slate blue */
+    margin-bottom: 1em; /* Adds space below the heading */
+}
+
+
+/* Profile Dropdown Styles */
+.profile-container {
+    position: absolute; /* Positioned relative to .header */
+    top: 20px;
+    right: 20px;
+}
+
+.profile-dropdown {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 30px;
+    padding: 5px 15px;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-dropdown img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.profile-dropdown select {
+    border: none;
+    background-color: transparent;
+    font-size: 16px;
+    cursor: pointer;
+    appearance: none;
+    padding-right: 10px;
+}
+
+.profile-dropdown select:focus {
+    outline: none;
+}
+
+.profile-dropdown::after {
+    content: '▼';
+    font-size: 12px;
+    color: #666;
+    margin-left: 5px;
+}
+
+/* Login Container Styles */
+.login-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: none;
+    width: 450px;
+    margin: 20px auto; /* Center and space out from top */
+    text-align: center;
+}
+
+.login-container label,
+.login-container input,
+.login-container button {
+    display: block;
+    width: 95%; /* Full width inputs and buttons */
+    margin: 10px auto; /* Center align with margin */
+}
+
+.login-container input {
+    padding: 10px;
+}
+
+.login-container button {
+    height: 60px;
+    border-radius: 12px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.login-container button:hover {
+    background-color: #218838;
+}
+
+/* Hide elements if needed */
+/* .main {
+    display: none;
+} */
+
+.main {
+    width: 90%;
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+.horizontal-tabs {
+    margin-top: 1.5rem;
+    display: flex;
+    align-items: center;
+    overflow-x: auto;
+}
+
+
+
+.horizontal-tabs a {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    height: 48px;
+    padding: 0 0.25rem;
+    font-weight: 500;
+    font-size: large;
+    color: inherit;
+    border-bottom: 3px solid transparent;
+    text-decoration: none;
+    transition: 0.15s ease;
+}
+
+.horizontal-tabs a:hover,
+.horizontal-tabs a:focus,
+.horizontal-tabs a.active {
+    color: blue;
+    border-bottom-color: black;
+}
+
+.horizontal-tabs a + * {
+    margin-left: 1rem;
+}
+
+.hidden {
+    display: none;
+}
+
+.content-main {
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+
+#new-bill{
+    border: 2px solid red;
+}
+
+#customerbill{
+    border: 4px solid blue;
+}
+/* Parent container to hold both #new-bill and #customerbill */
+#bill-section {
+    display: flex;
+    justify-content: space-between; /* Space between the two containers */
+    gap: 20px; /* Space between them */
+    margin: 20px;
+}
+
+/* New bill and customer bill containers */
+#new-bill, #customerbill {
+    flex: 1; /* Both containers will take equal width */
+    padding: 20px;
+    box-sizing: border-box;
+    border: 2px solid #ccc; /* Optional: Add borders for both sections */
+    min-width: 300px; /* Ensure a minimum width so they don't get too small */
+}
+
+    #new-bill, #customerbill {
+        width: 100%; /* Full width when stacked vertically */
+        margin-bottom: 20px; /* Add space between them when stacked */
+    }
+
+
+    .form-column2 {
+        border: 2px solid grey;
+        margin-top: 40px;
+        height: 700px;
+        padding: 20px; /* Add padding inside the div for better layout */
+        box-sizing: border-box; /* Ensure padding and border are included in the width */
+        overflow-y: auto; /* Allow vertical scrolling if content exceeds the height */
+    }
+    
+    .form-column2 h2{
+        margin-left: 10px;
+    }
+
+

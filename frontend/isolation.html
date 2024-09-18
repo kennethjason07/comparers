@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toggle Test</title>
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <label>
+        <input type="checkbox" name="measurements-selection" value="pant" onclick="toggleMeasurements()"> Pant
+    </label>
+    <label>
+        <input type="checkbox" name="measurements-selection" value="shirt" onclick="toggleMeasurements()"> Shirt
+    </label>
+    <label>
+        <input type="checkbox" name="measurements-selection" value="extra" onclick="toggleMeasurements()"> Extra
+    </label>
+
+    <fieldset id="pant-section" class="hidden">
+        <legend><h2>Pant Measurements:</h2></legend>
+        <!-- Pant measurements fields here -->
+    </fieldset>
+
+    <fieldset id="shirt-section" class="hidden">
+        <legend><h2>Shirt Measurements:</h2></legend>
+        <!-- Shirt measurements fields here -->
+    </fieldset>
+
+    <fieldset id="extra-section" class="hidden">
+        <legend><h2>Extra Measurements:</h2></legend>
+        <!-- Extra measurements fields here -->
+    </fieldset>
+
+    <script>
+        function toggleMeasurements() {
+            console.log("toggleMeasurements function called");
+
+            var pantSection = document.getElementById("pant-section");
+            var shirtSection = document.getElementById("shirt-section");
+            var extraSection = document.getElementById("extra-section");
+
+            // Get all checkboxes for measurements selection
+            var selectedValues = document.querySelectorAll('input[name="measurements-selection"]:checked');
+            
+            console.log("Selected values:", selectedValues); // Check selected values in the console
+
+            // Hide all sections initially
+            pantSection.classList.add("hidden");
+            shirtSection.classList.add("hidden");
+            extraSection.classList.add("hidden");
+
+            // Show sections based on selected checkboxes
+            selectedValues.forEach(selection => {
+                console.log("Processing selection:", selection.value); // Check which values are being processed
+                if (selection.value === "pant") {
+                    pantSection.classList.remove("hidden");
+                } else if (selection.value === "shirt") {
+                    shirtSection.classList.remove("hidden");
+                } else if (selection.value === "extra") {
+                    extraSection.classList.remove("hidden");
+                }
+            });
+        }
+    </script>
+</body>
+</html>
