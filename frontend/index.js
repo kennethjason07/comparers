@@ -4,6 +4,23 @@ window.onload = function() {
 }
 
 // Function to authenticate user
+// function authenticateUser() {
+//     const username = document.getElementById("username").value;
+//     const password = document.getElementById("password").value;
+
+//     // Set your desired username and password
+//     const validUsername = "admin";
+//     const validPassword = "password123";
+
+//     // Simple check for username and password
+//     if (username === validUsername && password === validPassword) {
+//         document.querySelector('.login-container').style.display = 'none';
+//         document.querySelector('.main').style.display = 'block';
+//     } else {
+//         alert("Invalid username or password. Please try again.");
+//     }
+// }
+
 function authenticateUser() {
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
@@ -14,12 +31,13 @@ function authenticateUser() {
 
     // Simple check for username and password
     if (username === validUsername && password === validPassword) {
-        document.querySelector('.login-container').style.display = 'none';
-        document.querySelector('.main').style.display = 'block';
+        // Redirect to a different page (e.g., "dashboard.html")
+        window.location.href = 'index.html'; // Change this to your desired page
     } else {
         alert("Invalid username or password. Please try again.");
     }
 }
+
 
 // Function to show content based on clicked tab
 function showContent(id) {
@@ -552,6 +570,137 @@ function updatePaymentStatus(orderId, newPaymentStatus) {
     });
 }
 
+function fetchOrders() {
+    fetch('http://127.0.0.1:5000/api/orders')
+        .then(response => response.json())
+        .then(data => {
+            const ordersContainer = document.getElementById('order-overview');
+            ordersContainer.innerHTML = ''; // Clear previous content
 
+            if (data && Object.keys(data).length > 0) {
+                for (const deliveryDate in data) {
+                    const dateHeader = document.createElement('h3');
+                    dateHeader.textContent = `Delivery Date: ${deliveryDate}`;
+                    ordersContainer.appendChild(dateHeader);
+
+                    const ordersForDate = Array.isArray(data[deliveryDate]) ? data[deliveryDate] : [];
+
+                    let table = `<table>
+                        <thead>
+                            <tr>
+                                <th>Serial No.</th>
+                                <th>ID</th>
+                                <th>Garment Type</th>
+                                <th>Quantity</th>
+                                <th>Status</th>
+                                <th>Update Status</th>
+                                <th>Order Date</th>
+                                <th>Payment Mode</th>
+                                <th>Payment Status</th>
+                                <th>Update Payment Status</th>
+                                <th>Payment Amount</th>
+                                <th>Bill ID</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
+
+                    ordersForDate.forEach((order, index) => {
+                        const serialNumber = index + 1;
+                        table += `<tr>
+                            <td>${serialNumber}</td>
+                            <td>${order.id}</td>
+                            <td>${order.garment_type}</td>
+                            <td>${order.quantity}</td>
+                            <td>${order.status}</td>
+                            <td>
+                                <select onchange="updateOrderStatus(${order.id}, this.value)">
+                                    <option value="Pending" ${order.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                                    <option value="Completed" ${order.status === 'Completed' ? 'selected' : ''}>Completed</option>
+                                    <option value="Cancelled" ${order.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                                </select>
+                            </td>
+                            <td>${order.order_date}</td>
+                            <td>${order.payment_mode}</td>
+                            <td>${order.payment_status}</td>
+                            <td>
+                                <select onchange="updatePaymentStatus(${order.id}, this.value)">
+                                    <option value="Pending" ${order.payment_status === 'Pending' ? 'selected' : ''}>Pending</option>
+                                    <option value="Paid" ${order.payment_status === 'Paid' ? 'selected' : ''}>Paid</option>
+                                    <option value="Cancelled" ${order.payment_status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                                </select>
+                            </td>
+                            <td>${order.payment_amount}</td>
+                            <td>${order.bill_id}</td>
+                        </tr>`;
+                    });
+
+                    table += '</tbody></table>';
+                    ordersContainer.innerHTML += table;
+                }
+            } else {
+                ordersContainer.innerHTML = '<p>No orders found.</p>';
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching orders:', error);
+            ordersContainer.innerHTML = '<p>Error fetching orders.</p>';
+        });
+}
+
+// Function to update order status
+function updateOrderStatus(orderId, newStatus) {
+    fetch(`http://127.0.0.1:5000/api/orders/${orderId}/status`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ status: newStatus })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(result => {
+        console.log('Order status update response:', result);
+        alert('Order status updated successfully');
+        // No need to reload the page, just show a success message
+    })
+    .catch(error => {
+        console.error('Error updating order status:', error);
+        alert('Error updating order status');
+    });
+}
+
+// Function to update payment status
+function updatePaymentStatus(orderId, newPaymentStatus) {
+    fetch(`http://127.0.0.1:5000/api/orders/${orderId}/payment-status`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ payment_status: newPaymentStatus })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(result => {
+        console.log('Payment status update response:', result);
+        alert('Payment status updated successfully');
+        // No need to reload the page, just show a success message
+    })
+    .catch(error => {
+        console.error('Error updating payment status:', error);
+        alert('Error updating payment status');
+    });
+}
+
+document.getElementById('fetch-orders').addEventListener('click', function () {
+    fetchOrders();
+});
 
 
