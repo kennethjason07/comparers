@@ -1,8 +1,11 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from back.app import app, db
 from back.models import Bill, Order
 from datetime import datetime
 import json
+
+
 
 @app.route('/api/new-bill', methods=['POST'])
 def new_bill():
@@ -113,35 +116,6 @@ def new_bill():
         return jsonify({'error': str(e)}), 500
     
 
-# @app.route('/api/orders', methods=['GET'])
-# def get_orders():
-#     try:
-#         # Retrieve all orders sorted by due_date
-#         orders = Order.query.order_by(Order.due_date.asc()).all()
-
-#         # Use defaultdict to group orders by due_date
-#         grouped_orders = defaultdict(list)
-        
-#         for order in orders:
-#             due_date_str = order.due_date.strftime('%Y-%m-%d')  # Format date as string
-#             grouped_orders[due_date_str].append({
-#                 'id': order.id,
-#                 'garment_type': order.garment_type,
-#                 'quantity': order.quantity,
-#                 'status': order.status,
-#                 'order_date': order.order_date.strftime('%Y-%m-%d'),  # Format date as string
-#                 'due_date': due_date_str,
-#                 'payment_mode': order.payment_mode,
-#                 'payment_status': order.payment_status,
-#                 'payment_amount': order.payment_amount,
-#                 'bill_id': order.bill_id
-#             })
-
-#         return jsonify(grouped_orders), 200  # Send the data as JSON response
-
-#     except Exception as e:
-#         return jsonify({'error': str(e)}), 500
-
 
 @app.route('/api/orders', methods=['GET'])
 def get_orders():
@@ -182,17 +156,21 @@ def get_orders():
 
         
 
-@app.route('/api/update-order-status/<int:order_id>', methods=['PUT'])
+
+
+    
+
+@app.route('/api/orders/<int:order_id>/status', methods=['PUT'])
 def update_order_status(order_id):
     try:
         data = request.get_json()
-        new_status = data.get('status')
+        status = data.get('status')
 
         order = Order.query.get(order_id)
         if not order:
             return jsonify({'error': 'Order not found'}), 404
 
-        order.status = new_status
+        order.status = status
         db.session.commit()
 
         return jsonify({'message': 'Order status updated successfully'}), 200
@@ -200,18 +178,17 @@ def update_order_status(order_id):
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-
-@app.route('/api/update-payment-status/<int:order_id>', methods=['PUT'])
+@app.route('/api/orders/<int:order_id>/payment-status', methods=['PUT'])
 def update_payment_status(order_id):
     try:
         data = request.get_json()
-        new_payment_status = data.get('payment_status')
+        payment_status = data.get('payment_status')
 
         order = Order.query.get(order_id)
         if not order:
             return jsonify({'error': 'Order not found'}), 404
 
-        order.payment_status = new_payment_status
+        order.payment_status = payment_status
         db.session.commit()
 
         return jsonify({'message': 'Payment status updated successfully'}), 200
@@ -219,6 +196,6 @@ def update_payment_status(order_id):
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-    
+
 if __name__ == "__main__":
     app.run(debug=True)
