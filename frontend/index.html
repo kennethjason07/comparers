@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Starset Consultancy Services</title>
     <link rel="stylesheet" href="/frontend/styles.css">
+    <link rel="icon" href="/frontend/favicon.ico" type="image/x-icon">
 
 </head>
 <body>
@@ -25,16 +26,6 @@
         </div>
     </header>
 
-<!-- 
-    <div class="login-container"></div>
-        <h2>Login</h2>
-        <label for="username">Username:</label>
-        <input type="text" id="username" placeholder="enter username">
-        <label for="password">Password:</label>
-        <input type="password"  id="password" placeholder="enter password">
-        <button onclick="authenticateUser()">Login</button>
-    </div> -->
-
     <main class="main">
             <div class="main-header">
                 <h1>Dashboard</h1>
@@ -43,8 +34,8 @@
                 <a href="#" onclick="showContent('new-bill')">New Bill</a>
                 <a href="#" onclick="showContent('customer-info')">Customer's Information</a>
                 <a href="#" onclick="showContent('orders')">Orders</a>
-                <a href="#" onclick="showContent('order-overview')">Orders Overview </a>
-               <a href="#" onclick="showContent('workers')">Workers</a>
+                <a href="#" onclick="showContent('order-overview') ,fetchOrders()">Orders Overview </a>
+               <a href="#" onclick="showContent('workers') ">Workers</a>
             </div>
 
             <div class="content-main">
@@ -307,8 +298,7 @@
                     orders
                 </div>
                 <div id="order-overview" class="order-overview hidden">
-                    <button id="fetch-orders">Fetch Orders</button>
-                    k
+                    <!-- <button id="fetch-orders">Fetch Orders</button> -->
                 </div>
                 <div id="workers" class="workers hidden">
                     workers

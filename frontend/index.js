@@ -3,23 +3,6 @@ window.onload = function() {
     document.querySelector('.main').style.display = 'none'; // Ensure main content is hidden initially
 }
 
-// Function to authenticate user
-// function authenticateUser() {
-//     const username = document.getElementById("username").value;
-//     const password = document.getElementById("password").value;
-
-//     // Set your desired username and password
-//     const validUsername = "admin";
-//     const validPassword = "password123";
-
-//     // Simple check for username and password
-//     if (username === validUsername && password === validPassword) {
-//         document.querySelector('.login-container').style.display = 'none';
-//         document.querySelector('.main').style.display = 'block';
-//     } else {
-//         alert("Invalid username or password. Please try again.");
-//     }
-// }
 
 function authenticateUser() {
     const username = document.getElementById("username").value;
@@ -424,8 +407,8 @@ function updatePaymentStatus(orderId, newPaymentStatus) {
     });
 }
 
-document.getElementById('fetch-orders').addEventListener('click', function () {
-    fetchOrders();
-});
+// document.getElementById('order-overview').addEventListener('click', function () {
+//     fetchOrders();
+// });
 
 
