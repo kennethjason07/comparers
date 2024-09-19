@@ -104,45 +104,51 @@ function toggleMeasurements() {
 }
 
 
+function getValueOrZero(id) {
+    const value = document.getElementById(id).value;
+    return value === '' ? 0 : parseFloat(value);
+}
+
 document.getElementById('new-bill-form').addEventListener('submit', function (event) {
-    event.preventDefault(); // Prevent the default form submission behavior
+    event.preventDefault(); // Prevent default form submission behavior
     
     const customerName = document.getElementById("customer-name").value;
     const mobileNo = document.getElementById("mobile-number").value;
     const dateIssue = document.getElementById("date_issue").value;
     const deliveryDate = document.getElementById("delivery-date").value;
     const garmentType = document.getElementById("garment_type").value;
-    const suitQty = document.getElementById("suit_qty").value;
-    const safariQty = document.getElementById("safari_qty").value;
-    const pantQty = document.getElementById("pant_qty").value;
-    const shirtQty = document.getElementById("shirt_qty").value;
-    const totalQty = document.getElementById("total_qty").value;
+    const suitQty = getValueOrZero("suit_qty");
+    const safariQty = getValueOrZero("safari_qty");
+    const pantQty = getValueOrZero("pant_qty");
+    const shirtQty = getValueOrZero("shirt_qty");
+    const totalQty = getValueOrZero("total_qty");
     const todayDate = document.getElementById("today-date").value;
     const dueDate = document.getElementById("due-date").value;
-    const totalAmt = document.getElementById("total_amt").value;
+    const totalAmt = getValueOrZero("total_amt");
     const paymentMode = document.getElementById("Payment").value;
     const paymentStatus = document.getElementById("payementstatus").value;
-    const paymentAmount = document.getElementById("total_amt").value;
-    
+
     // Pant measurements
-    const pantLength = document.getElementById("length").value;
-    const pantKamar = document.getElementById("kamar").value;
-    const pantHips = document.getElementById("hips").value;
-    const pantWaist = document.getElementById("waist").value;
-    const pantGhutna = document.getElementById("Ghutna").value;
-    const pantBottom = document.getElementById("Bottom").value;
-    const pantSeat = document.getElementById("seat").value;
-    
+    const pantLength = getValueOrZero("length");
+    const pantKamar = getValueOrZero("kamar");
+    const pantHips = getValueOrZero("hips");
+    const pantWaist = getValueOrZero("waist");
+    const pantGhutna = getValueOrZero("Ghutna");
+    const pantBottom = getValueOrZero("Bottom");
+    const pantSeat = getValueOrZero("seat");
+
     // Shirt measurements
-    const shirtLength = document.getElementById("shirtlength").value;
-    const shirtBody = document.getElementById("body").value;
-    const shirtLoose = document.getElementById("Loose").value;
-    const shirtShoulder = document.getElementById("Shoulder").value;
-    const shirtAstin = document.getElementById("Astin").value;
-    const shirtcollor = document.getElementById("collor").value;
-    const shirtallose = document.getElementById("allose").value;
-    // Extra measurments
-    const extraLength = document.getElementById("extra-input").value;
+    const shirtLength = getValueOrZero("shirtlength");
+    const shirtBody = getValueOrZero("body");
+    const shirtLoose = getValueOrZero("Loose");
+    const shirtShoulder = getValueOrZero("Shoulder");
+    const shirtAstin = getValueOrZero("Astin");
+    const shirtCollar = getValueOrZero("collor");
+    const shirtAloose = getValueOrZero("allose");
+
+    // Extra measurements
+    const extraMeasurements = document.getElementById("extra-input").value || null;
+
     const formData = {
         customerName,
         mobileNo,
@@ -159,55 +165,43 @@ document.getElementById('new-bill-form').addEventListener('submit', function (ev
         totalAmt,
         paymentMode,
         paymentStatus,
-        paymentAmount,
-        pantMeasurements: {
-            pantLength,
-            pantKamar,
-            pantHips,
-            pantWaist,
-            pantGhutna,
-            pantBottom,
-            pantSeat
-        },
-        shirtMeasurements: {
-            shirtLength,
-            shirtBody,
-            shirtLoose,
-            shirtShoulder,
-            shirtAstin,
-            shirtcollor,
-            shirtallose
-        },
-        extraLength: {
-            extraLength
-        }
-        
+        pantLength,
+        pantKamar,
+        pantHips,
+        pantWaist,
+        pantGhutna,
+        pantBottom,
+        pantSeat,
+        shirtLength,
+        shirtBody,
+        shirtLoose,
+        shirtShoulder,
+        shirtAstin,
+        shirtCollar,
+        shirtAloose,
+        extraMeasurements
     };
 
     // Submit the form data to the backend
-fetch('http://127.0.0.1:5000/api/new-bill', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(formData)
-})
-.then(response => response.json())
-.then(result => {
-    console.log('Bill created:', result);
-    alert('Bill created successfully');
-
-    // Call the saveAndPrint function after the form is successfully submitted
-    saveAndPrint();
-
-    // Optionally, reset the form after saving and printing
-    // document.getElementById('new-bill-form').reset();
-})
-.catch(error => {
-    console.error('Error creating bill:', error);
-    alert('An error occurred while creating the bill.');
+    fetch('http://127.0.0.1:5000/api/new-bill', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(result => {
+        console.log(formData);
+        alert('Bill created successfully');
+        saveAndPrint(); // Print after successful form submission
+    })
+    .catch(error => {
+        console.error('Error creating bill:', error);
+        alert('An error occurred while creating the bill.');
+    });
 });
-});
+
 
 
 
@@ -277,6 +271,287 @@ function saveAndPrint() {
 }
 
 
+// document.getElementById('fetch-orders').addEventListener('click', function () {
+//     fetch('http://127.0.0.1:5000/api/orders')
+//         .then(response => response.json())
+//         .then(data => {
+//             console.log('Fetched data:', data); // Log the data for debugging
+//             const ordersContainer = document.getElementById('order-overview');
+//             ordersContainer.innerHTML = ''; // Clear previous content
+
+//             if (data && Object.keys(data).length > 0) {
+//                 // Loop through each delivery date group
+//                 for (const deliveryDate in data) {
+//                     // Create a header for the delivery date
+//                     const dateHeader = document.createElement('h3');
+//                     dateHeader.textContent = `Delivery Date: ${deliveryDate}`;
+//                     ordersContainer.appendChild(dateHeader);
+
+//                     // Ensure the data[deliveryDate] is an array
+//                     const ordersForDate = Array.isArray(data[deliveryDate]) ? data[deliveryDate] : [];
+
+//                     // Create a table to display the orders for this delivery date
+//                     let table = `<table>
+//                         <thead>
+//                             <tr>
+//                                 <th>Serial No.</th>
+//                                 <th>ID</th>
+//                                 <th>Garment Type</th>
+//                                 <th>Quantity</th>
+//                                 <th>Status</th>
+//                                 <th>Order Date</th>
+//                                 <th>Payment Mode</th>
+//                                 <th>Payment Status</th>
+//                                 <th>Payment Amount</th>
+//                                 <th>Bill ID</th>
+//                             </tr>
+//                         </thead>
+//                         <tbody>`;
+
+//                     // Loop through each order for this delivery date
+//                     ordersForDate.forEach((order, index) => {
+//                         const serialNumber = index + 1; // Incremental serial number for each order
+//                         table += `<tr>
+//                             <td>${serialNumber}</td> <!-- Serial Number Column -->
+//                             <td>${order.id}</td>
+//                             <td>${order.garment_type}</td>
+//                             <td>${order.quantity}</td>
+//                             <td>${order.status}</td>
+//                             <td>${order.order_date}</td>
+//                             <td>${order.payment_mode}</td>
+//                             <td>${order.payment_status}</td>
+//                             <td>${order.payment_amount}</td>
+//                             <td>${order.bill_id}</td>
+//                         </tr>`;
+//                     });
+
+//                     table += '</tbody></table>';
+//                     ordersContainer.innerHTML += table;
+//                 }
+//             } else {
+//                 ordersContainer.innerHTML = '<p>No orders found.</p>';
+//             }
+//         })
+//         .catch(error => {
+//             console.error('Error fetching orders:', error);
+//             ordersContainer.innerHTML = '<p>Error fetching orders.</p>';
+//         });
+// });
+
+// document.getElementById('fetch-orders').addEventListener('click', function () {
+//     fetch('http://127.0.0.1:5000/api/orders')
+//         .then(response => response.json())
+//         .then(data => {
+//             const ordersContainer = document.getElementById('order-overview');
+//             ordersContainer.innerHTML = ''; // Clear previous content
+
+//             if (data && data.length > 0) {
+//                 let table = '<table><thead><tr><th>Serial No.</th><th>ID</th><th>Garment Type</th><th>Quantity</th><th>Status</th><th>Order Date</th><th>Due Date</th><th>Payment Mode</th><th>Payment Status</th><th>Payment Amount</th><th>Bill ID</th></tr></thead><tbody>';
+                
+//                 data.forEach((order, index) => {
+//                     table += `<tr>
+//                         <td>${index + 1}</td>
+//                         <td>${order.id}</td>
+//                         <td>${order.garment_type}</td>
+//                         <td>${order.quantity}</td>
+//                         <td>
+//                             <select onchange="updateOrderStatus(${order.id}, this.value)">
+//                                 <option value="Pending" ${order.status === 'Pending' ? 'selected' : ''}>Pending</option>
+//                                 <option value="Completed" ${order.status === 'Completed' ? 'selected' : ''}>Completed</option>
+//                                 <option value="Cancelled" ${order.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+//                             </select>
+//                         </td>
+//                         <td>${order.order_date}</td>
+//                         <td>${order.due_date}</td>
+//                         <td>${order.payment_mode}</td>
+//                         <td>
+//                             <select onchange="updatePaymentStatus(${order.id}, this.value)">
+//                                 <option value="Pending" ${order.payment_status === 'Pending' ? 'selected' : ''}>Pending</option>
+//                                 <option value="Paid" ${order.payment_status === 'Paid' ? 'selected' : ''}>Paid</option>
+//                                 <option value="Cancelled" ${order.payment_status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+//                             </select>
+//                         </td>
+//                         <td>${order.payment_amount}</td>
+//                         <td>${order.bill_id}</td>
+//                     </tr>`;
+//                 });
+
+//                 table += '</tbody></table>';
+//                 ordersContainer.innerHTML = table;
+//             } else {
+//                 ordersContainer.innerHTML = '<p>No orders found.</p>';
+//             }
+//         })
+//         .catch(error => {
+//             console.error('Error fetching orders:', error);
+//             document.getElementById('order-overview').innerHTML = '<p>Error fetching orders.</p>';
+//         });
+// });
+
+// // Function to update order status
+// function updateOrderStatus(orderId, newStatus) {
+//     fetch(`http://127.0.0.1:5000/api/update-order-status/${orderId}`, {
+//         method: 'PUT',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify({ status: newStatus })
+//     })
+//     .then(response => response.json())
+//     .then(result => {
+//         alert('Order status updated successfully');
+//     })
+//     .catch(error => {
+//         console.error('Error updating order status:', error);
+//         alert('Error updating order status');
+//     });
+// }
+
+// // Function to update payment status
+// function updatePaymentStatus(orderId, newPaymentStatus) {
+//     fetch(`http://127.0.0.1:5000/api/update-payment-status/${orderId}`, {
+//         method: 'PUT',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify({ payment_status: newPaymentStatus })
+//     })
+//     .then(response => response.json())
+//     .then(result => {
+//         alert('Payment status updated successfully');
+//     })
+//     .catch(error => {
+//         console.error('Error updating payment status:', error);
+//         alert('Error updating payment status');
+//     });
+// }
+
+
+
+
+
+
+
+document.getElementById('fetch-orders').addEventListener('click', function () {
+    fetch('http://127.0.0.1:5000/api/orders')
+        .then(response => response.json())
+        .then(data => {
+            console.log('Fetched data:', data); // Log the data for debugging
+            const ordersContainer = document.getElementById('order-overview');
+            ordersContainer.innerHTML = ''; // Clear previous content
+
+            if (data && Object.keys(data).length > 0) {
+                // Loop through each delivery date group
+                for (const deliveryDate in data) {
+                    // Create a header for the delivery date
+                    const dateHeader = document.createElement('h3');
+                    dateHeader.textContent = `Delivery Date: ${deliveryDate}`;
+                    ordersContainer.appendChild(dateHeader);
+
+                    // Ensure the data[deliveryDate] is an array
+                    const ordersForDate = Array.isArray(data[deliveryDate]) ? data[deliveryDate] : [];
+
+                    // Create a table to display the orders for this delivery date
+                    let table = `<table>
+                        <thead>
+                            <tr>
+                                <th>Serial No.</th>
+                                <th>ID</th>
+                                <th>Garment Type</th>
+                                <th>Quantity</th>
+                                <th>Status</th>
+                                <th>Update Status</th>
+                                <th>Order Date</th>
+                                <th>Payment Mode</th>
+                                <th>Payment Status</th>
+                                <th>Update Payment Status</th>
+                                <th>Payment Amount</th>
+                                <th>Bill ID</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
+
+                    // Loop through each order for this delivery date
+                    ordersForDate.forEach((order, index) => {
+                        const serialNumber = index + 1; // Incremental serial number for each order
+                        table += `<tr>
+                            <td>${serialNumber}</td> <!-- Serial Number Column -->
+                            <td>${order.id}</td>
+                            <td>${order.garment_type}</td>
+                            <td>${order.quantity}</td>
+                            <td>${order.status}</td>
+                        <td>
+                            <select onchange="updateOrderStatus(${order.id}, this.value)">
+                                <option value="Pending" ${order.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                                <option value="Completed" ${order.status === 'Completed' ? 'selected' : ''}>Completed</option>
+                                <option value="Cancelled" ${order.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                            </select>
+                        </td>
+                            <td>${order.order_date}</td>
+                            <td>${order.payment_mode}</td>
+                            <td>${order.payment_status}</td>
+                            <td>
+                        <select onchange="updatePaymentStatus(${order.id}, this.value)">
+                                 <option value="Pending" ${order.payment_status === 'Pending' ? 'selected' : ''}>Pending</option>
+                                <option value="Paid" ${order.payment_status === 'Paid' ? 'selected' : ''}>Paid</option>
+                                 <option value="Cancelled" ${order.payment_status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                             </select>
+                         </td>
+                            <td>${order.payment_amount}</td>
+                            <td>${order.bill_id}</td>
+                        </tr>`;
+                    });
+
+                    table += '</tbody></table>';
+                    ordersContainer.innerHTML += table;
+                }
+            } else {
+                ordersContainer.innerHTML = '<p>No orders found.</p>';
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching orders:', error);
+            ordersContainer.innerHTML = '<p>Error fetching orders.</p>';
+        });
+});
+
+// Function to update order status
+function updateOrderStatus(orderId, newStatus) {
+    fetch(`http://127.0.0.1:5000/api/update-order-status/${orderId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ status: newStatus })
+    })
+    .then(response => response.json())
+    .then(result => {
+        alert('Order status updated successfully');
+    })
+    .catch(error => {
+        console.error('Error updating order status:', error);
+        alert('Error updating order status');
+    });
+}
+
+// Function to update payment status
+function updatePaymentStatus(orderId, newPaymentStatus) {
+    fetch(`http://127.0.0.1:5000/api/update-payment-status/${orderId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ payment_status: newPaymentStatus })
+    })
+    .then(response => response.json())
+    .then(result => {
+        alert('Payment status updated successfully');
+    })
+    .catch(error => {
+        console.error('Error updating payment status:', error);
+        alert('Error updating payment status');
+    });
+}
 
 function fetchOrders() {
     fetch('http://127.0.0.1:5000/api/orders')
