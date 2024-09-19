@@ -111,6 +111,114 @@ def new_bill():
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+    
 
+# @app.route('/api/orders', methods=['GET'])
+# def get_orders():
+#     try:
+#         # Retrieve all orders sorted by due_date
+#         orders = Order.query.order_by(Order.due_date.asc()).all()
+
+#         # Use defaultdict to group orders by due_date
+#         grouped_orders = defaultdict(list)
+        
+#         for order in orders:
+#             due_date_str = order.due_date.strftime('%Y-%m-%d')  # Format date as string
+#             grouped_orders[due_date_str].append({
+#                 'id': order.id,
+#                 'garment_type': order.garment_type,
+#                 'quantity': order.quantity,
+#                 'status': order.status,
+#                 'order_date': order.order_date.strftime('%Y-%m-%d'),  # Format date as string
+#                 'due_date': due_date_str,
+#                 'payment_mode': order.payment_mode,
+#                 'payment_status': order.payment_status,
+#                 'payment_amount': order.payment_amount,
+#                 'bill_id': order.bill_id
+#             })
+
+#         return jsonify(grouped_orders), 200  # Send the data as JSON response
+
+#     except Exception as e:
+#         return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/orders', methods=['GET'])
+def get_orders():
+    try:
+        # Fetch all orders from the database
+        orders = Order.query.all()
+
+        # Create a dictionary to group orders by delivery date
+        grouped_orders = {}
+
+        for order in orders:
+            # Format the delivery date as a string
+            delivery_date = order.due_date.strftime('%Y-%m-%d')
+
+            # If this delivery date is not in the dictionary, add it
+            if delivery_date not in grouped_orders:
+                grouped_orders[delivery_date] = []
+
+            # Append the order details to the corresponding delivery date
+            grouped_orders[delivery_date].append({
+                'id': order.id,
+                'garment_type': order.garment_type,
+                'quantity': order.quantity,
+                'status': order.status,
+                'order_date': order.order_date.strftime('%Y-%m-%d'),  # Format date as string
+                'due_date': order.due_date.strftime('%Y-%m-%d'),  # Format date as string
+                'payment_mode': order.payment_mode,
+                'payment_status': order.payment_status,
+                'payment_amount': order.payment_amount,
+                'bill_id': order.bill_id
+            })
+
+        # Return the grouped orders as JSON
+        return jsonify(grouped_orders), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+        
+
+@app.route('/api/update-order-status/<int:order_id>', methods=['PUT'])
+def update_order_status(order_id):
+    try:
+        data = request.get_json()
+        new_status = data.get('status')
+
+        order = Order.query.get(order_id)
+        if not order:
+            return jsonify({'error': 'Order not found'}), 404
+
+        order.status = new_status
+        db.session.commit()
+
+        return jsonify({'message': 'Order status updated successfully'}), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/api/update-payment-status/<int:order_id>', methods=['PUT'])
+def update_payment_status(order_id):
+    try:
+        data = request.get_json()
+        new_payment_status = data.get('payment_status')
+
+        order = Order.query.get(order_id)
+        if not order:
+            return jsonify({'error': 'Order not found'}), 404
+
+        order.payment_status = new_payment_status
+        db.session.commit()
+
+        return jsonify({'message': 'Payment status updated successfully'}), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+    
 if __name__ == "__main__":
     app.run(debug=True)
